@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Page Not Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --light-bg: #f4f2ec;
+      --light-text: #000;
+      --dark-bg: #1c2733;
+      --dark-text: #fff;
+      --primary-color: #4a8fdf;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--light-bg);
+      color: var(--light-text);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+      text-align: center;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    a:hover {
+      background-color: #377ddf;
+    }
+
+    /* Toggle Switch */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 25px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary-color);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toggle -->
+  <div class="theme-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="theme-toggle-checkbox">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <h1>404 - Page Not Found</h1>
+  <p>Sorry, the page you’re looking for doesn’t exist.</p>
+  <a href="/">Go to Homepage</a>
+
+  <script>
+    // Theme toggle logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById('theme-toggle-checkbox');
+      const currentTheme = localStorage.getItem('theme');
+
+      if (currentTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        toggle.checked = true;
+      }
+
+      toggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+          localStorage.setItem('theme', 'dark');
+        } else {
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

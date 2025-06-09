@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketMind - Stock Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/predict.css') }}">
+  <script type="module"> import { requireLogin } from "{{ url_for('static', filename='js/auth.js') }}"; requireLogin(); </script>
+  <!-- Intro.js CSS & JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div class="transition-overlay"></div>
+  <!-- Disclaimer Overlay -->
+  <div id="disclaimer-overlay" style="display:none;">
+    <div class="disclaimer-box">
+      <button id="close-disclaimer" aria-label="Close disclaimer">&times;</button>
+      <h2>Disclaimer</h2>
+      <ul>
+        <li>Stock market predictions shown here are based on historical data and statistical models.</li>
+        <li>They do not guarantee future results and should not be treated as financial advice.</li>
+        <li>Price differences between 100 to 600 points may occur due to market volatility.</li>
+        <li>Always consult a certified financial advisor before making investment decisions.</li>
+      </ul>
+      <div class="disclaimer-risk">
+        By using this app, you acknowledge and accept these risks.
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div><strong>MarketMind</strong></div>
+    <div>
+      <a href="{{ url_for('home') }}">Home</a>
+      <div class="dropdown">
+        <h4>Services</h4>
+        <div class="dropdown-content">
+          <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+          <a href="{{ url_for('movers') }}">Market Movers</a>
+          <a href="{{ url_for('news') }}">News</a>
+          <a href="{{ url_for('predict') }}">Predictor</a>
+        </div>
+      </div>
+      <a href="{{ url_for('login') }}" id="logout">Logout</a>
+      <label class="toggle-switch">
+        <input type="checkbox" id="darkModeToggle">
+        <span class="slider">
+          <span class="toggle-circle">
+            <span class="toggle-icon">&#9728;</span>
+          </span>
+        </span>
+      </label>
+    </div>
+  </nav>
+  
+  <!-- Main Container -->
+  <div class="predictor-container">
+    <h1>Stock Market Predictor</h1>
+    <form class="predictor-form">
+      <div class="form-group">
+        <label for="stock-select">Choose Stock</label>
+        <select id="stock-select" data-intro="Select the stock you want to predict." data-step="1">
+          <option value="">-- Select a stock --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="prediction-date">Prediction Date</label>
+        <input type="date" id="prediction-date" name="predictionDate" min="" data-intro="Pick a prediction date (6 days to 1 month from today)." data-step="2"/>
+      </div>
+      <!-- Epochs selection (dropdown with custom input) -->
+          <div class="form-group">
+            <label for="epochs">Epochs</label>
+            <select id="epochs" name="epochs" onchange="handleEpochsChange(this)" data-intro="Choose the number of training epochs (higher = more accurate, but slower)." data-step="3">
+              <option value="100" selected>100 (default)</option>
+              <option value="120">120</option>
+              <option value="150">150</option>
+              <option value="custom">Custom...</option>
+            </select>
+            <input type="number" id="custom-epochs" min="1" max="500" style="display:none; margin-top:8px;" placeholder="Enter epochs" />
+          </div>
+
+      <div class="form-group">
+        <label>Data Source</label>
+        <div class="radio-group" data-intro="Choose the data source for prediction." data-step="4">
+          <div class="radio-option">
+            <input type="radio" id="historical-only" name="data-source" value="historical-only" checked/>
+            <label for="historical-only">Historical Data Only</label>
+          </div>
+    
+          <div class="radio-option">
+            <input type="radio" id="sentiment-only" name="data-source" value="news-sentiment" />
+            <label for="sentiment-only">Sentiment Analysis Only</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="both" name="data-source" value="both" />
+            <label for="both">Both Historical and Sentiment</label>
+          </div>
+        </div>
+      </div>
+      <div id="message-box" style="display:none;"></div>
+      <button type="button" id="predict-btn" class="predict-btn" data-intro="Click here to predict the stock price!" data-step="5">Predict Stock Price</button>
+    </form>
+
+    <div class="result-section" id="result-section" style="display: none;">
+      <h2>Prediction Results</h2>
+      <div class="prediction-result">
+        <h3>Predicted Price for <span id="result-stock-name"></span></h3>
+        <div class="prediction-value">₹<span id="predicted-price"></span></div>
+        <div class="news-sentiment" id="news-sentiment" style="display: none;">
+          <h3>Latest News Sentiment</h3>
+          <p id="sentiment-text">Fetching sentiment...</p>
+        </div>
+        <div class="prediction-date" id="prediction-date-display"></div>
+      </div>
+      <div class="chart-container" id="chart-container">
+        <div id="prediction-chart" style="height: 450px;"></div>
+      </div>
+    </div>
+  </div>
+  <div style="height: 50px;"></div>
+  <div id="loading-overlay" style="display:none;">
+  <div class="loader-container">
+    <div class="spinner"></div>
+    <div id="progress-text">Loading... 0%</div>
+  </div>
+</div>
+  <script type="module" src="{{ url_for('static', filename='js/predict.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('fundamentals') }}">Fundamentals</a></li>
+          <li><a href="{{ url_for('movers') }}">Market Movers</a></li>
+          <li><a href="{{ url_for('news') }}">News</a></li>
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('predict') }}">Predictor</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul>
+            <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+            <li><a href="{{ url_for('terms') }}">Terms of Service</a></li>
+            <li><a href="{{ url_for('disclaimer') }}">Disclaimer</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:support@stockai.com">support@stockai.com</a></li>
+          <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Newsletter</h3>
+        <form id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 MarketMind. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+
+</body>
+</html>

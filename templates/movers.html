@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Intro.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <!-- Intro.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script type="module"> import { requireLogin } from "{{ url_for('static', filename='js/auth.js') }}"; requireLogin(); </script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>MarketMind - movers-Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/movers.css') }}">
+</head>
+<body>
+    <div class="transition-overlay"></div>
+
+    <nav class="navbar">
+        <div><strong>MarketMind</strong></div>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <div class="dropdown">
+                <h4>Services</h4>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('movers') }}">market Movers</a>
+                    <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+                    <a href="{{ url_for('news') }}">News</a>
+                    <a href="{{url_for('predict')}}">Predictor</a>
+                </div>
+            </div>
+            <a href="{{ url_for('login') }}" id="logout">Logout</a>
+            <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider">
+                <span class="toggle-circle">
+                <span class="toggle-icon">&#9790;</span> <!-- Sun by default -->
+                </span>
+            </span>
+            </label>
+        </div>
+    </nav>
+
+    <!-- Rotating Stock Ticker -->
+    <div class="stock-ticker-indian">
+        <div class="ticker-content-indian" id="ticker-content-indian">
+            <!-- Stock data will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="video-container ">
+        <video autoplay muted loop id="bgVideo">
+            <source src="{{ url_for('static', filename='video/bg video.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="content ">
+            <h1>Welcome to NSE Market Dashboard</h1>
+        </div>
+    </div>    
+
+    <!-- Market Movers Section -->
+    <div class="market-movers" data-intro="See the top gainers and losers in the market. Switch between list and graph view." data-step="1">
+        <h2 class="indian-head">Market Movers</h2>
+        <!-- Toggle Buttons -->
+        <div class="toggle-buttons">
+            <button id="list-view-btn" class="active">List View</button>
+            <button id="graph-view-btn">Graph View</button>
+        </div>
+        <div class="movers-container">
+            <!-- Top Gainers -->
+            <div class="movers-section">
+                <h3>Top Gainers</h3>
+                <ul id="top-gainers"></ul>
+                <div id="gainers-plotly" style="display: none; height:350px;"></div>
+            </div>
+            <!-- Top Losers -->
+            <div class="movers-section">
+                <h3>Top Losers</h3>
+                <ul id="top-losers"></ul>
+                <div id="losers-plotly" style="display: none; height:350px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="favorites-container" data-intro="Bookmark your favorite companies and track their prices here." data-step="2">
+    <h2>My Favorite Companies</h2>
+    <div id="favorites-message" style="display:none; margin-bottom:10px;"></div>
+    <div class="favorites-table-wrapper">
+        <table id="favorites-table">
+            <thead>
+                <tr>
+                    <th>Bookmark</th>
+                    <th>Company</th>
+                    <th>Ticker</th>
+                    <th>Current Price</th>
+                </tr>
+            </thead>
+            <tbody id="favorites-tbody">
+                <!-- Rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <div id="message-container" style="display: none; padding: 10px; margin: 10px 0; border-radius: 5px;"></div>
+
+</div>
+
+    <script type="module" src="{{ url_for('static', filename='js/movers.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="{{ url_for('fundamentals') }}">Fundamentals</a></li>
+                    <li><a href="{{ url_for('movers') }}">Market Movers</a></li>
+                    <li><a href="{{ url_for('news') }}">News</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{url_for('predict')}}">Predictor</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('terms') }}">Terms of Service</a></li>
+                    <li><a href="{{ url_for('disclaimer') }}">Disclaimer</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:support@stockai.com">support@stockai.com</a></li>
+                    <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 MarketMind. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

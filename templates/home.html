@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocker - Homepage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script> const modelpath = "{{ modelpath }}"; </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Intro.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <!-- Intro.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+</head>
+<body>
+    
+    <div class="transition-overlay"></div>
+
+    <nav class="navbar" data-intro="This is the main navigation bar. Use it to access all features!" data-step="2">
+        <div><strong>MarketMind</strong></div>
+        <div>
+            <a href="#">Home</a>
+            <div class="dropdown">
+                <h4>Services</h4>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+                    <a href="{{ url_for('movers') }}">Market Movers</a>
+                    <a href="{{ url_for('news') }}">News</a>
+                    <a href="{{url_for('predict')}}">Predictor</a>
+                </div>
+            </div>
+            <a href="{{ url_for('login') }}" id="logout">Login</a>
+            <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider">
+                <span class="toggle-circle">
+                <span class="toggle-icon">&#9790;</span> <!-- Sun by default -->
+                </span>
+            </span>
+            </label>
+        </div>
+    </nav>
+
+    <div class="container glow" data-text="MarketMind" data-intro="Welcome to MarketMind! This is your dashboard." data-step="1">MarketMind</div>
+
+    <!-- Highlighted Search Section -->
+    <div class="highlight-container fade-in" data-intro="Use the search bar to find companies and get instant suggestions." data-step="3">
+        <div class="description">
+            Stock analysis and screening tool for investors in India.
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-box" id="home-search-box" placeholder="Search for a company">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="stock-suggestions">
+            <p>Trending Stocks:</p>
+            <div class="suggestions-list">
+                <span class="suggestion">Reliance Industries</span>
+                <span class="suggestion">Tata Consultancy Services (TCS)</span>
+                <span class="suggestion">HDFC Bank</span>
+                <span class="suggestion">Infosys</span>
+                <span class="suggestion">ICICI Bank</span>
+            </div>
+        </div>
+    </div>
+    <!-- About Us Section -->
+    <div class="about-us fade-in">
+        <h2>About Us</h2>
+        <p>The stock market has a rich history, evolving from small trading groups to global financial powerhouses. Today, major players such as Reliance Industries, Tata Consultancy Services, and HDFC Bank dominate the Indian stock market. With technological advancements, stock analysis and prediction have become crucial tools for investors, helping them navigate the ever-changing market trends.</p>
+        <div id="three-container"></div>
+    </div>
+
+    <div class="cards-container fade-in" data-intro="Explore our services: Market Movers, Fundamentals, News, and Predictor." data-step="4">
+        <div class="card">
+            <h3>movers</h3>
+            <p>Explore real-time insights into the National Stock Exchange (NSE) with our interactive dashboard. 
+                Track top gainers and losers, switch between list and graph views, 
+                nd fetch historical stock data by selecting dates and searching for specific stocks. Stay informed and make data-driven decisions with ease.</p>
+        </div>
+        <div class="card">
+            <h3>Fundamentals</h3>
+            <p>The MarketMind's Fundamental page analyzes Indian Stock Market Data with options to input dates, search stocks, and view data in Table, Chart, or Both formats.
+                 It features a Stock Fundamentals Analysis section with Key Ratios, Historical Trends, and Peer Comparison, displaying Valuation, Profitability, Liquidity, and Leverage ratios.
+                 The page includes navigation links for Home, Services, Logout, and a theme toggle.</p>
+        </div>
+        <div class="card">
+            <h3>News</h3>
+            <p>Latest News on Indian Markets:
+                Stay updated with the most recent developments in the Indian stock market. 
+                Our news section provides insights on market trends, banking performance, policy updates, and sector-specific movements. 
+                From rising indices to regulatory meetings and emerging investment opportunities, explore key stories shaping the financial landscape.</p>
+        </div>
+        <div class="card">
+            <h3>Predictor</h3>
+            <p>Leverage the power of AI and machine learning to forecast stock price movements with our Predictor tool. 
+                Input a stock and receive short-term price predictions based on historical trends, technical indicators, and sentiment analysis. 
+                Designed for educational and research purposes, this tool aids in understanding market behavior. 
+                Please note: predictions may vary significantly and should not be considered financial advice. 
+                Use it to enhance your market intuition and strategy planning.
+                More features coming soon!</p>
+        </div>
+    </div>
+    
+    <!-- Include Firebase and other necessary JS files -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/home.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+    <div style="margin-top:500px"></div>
+
+    <footer>
+        <div class="footer-content" data-intro="Find quick links, legal info, and contact details here." data-step="5">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="{{ url_for('fundamentals') }}">Fundamentals</a></li>
+                    <li><a href="{{ url_for('movers') }}">movers</a></li>
+                    <li><a href="{{ url_for('news') }}">News</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{url_for('predict')}}">Predictor</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('terms') }}">Terms of Service</a></li>
+                    <li><a href="{{ url_for('disclaimer') }}">Disclaimer</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:support@stockai.com">support@stockai.com</a></li>
+                    <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 MarketMind. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

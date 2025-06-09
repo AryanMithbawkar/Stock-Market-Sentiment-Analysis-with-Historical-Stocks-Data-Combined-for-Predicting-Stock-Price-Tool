@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <!-- Theme Toggle Switch -->
+    <div class="theme-toggle" style="position: absolute; top: 20px; right: 30px;">
+        <label class="toggle-switch">
+        <input type="checkbox" id="theme-toggle-checkbox">
+        <span class="slider"></span>
+        </label>
+    </div>
+    <div class="container">
+        <!-- Left Section -->
+        <div class="left-section"></div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <h1 class="title" id="form-title">Create an account</h1>
+            <p class="subtitle" id="form-subtitle">Already have an account? <a href="#" id="toggle-form">Log in</a></p>
+
+            <form id="auth-form">
+                <div class="name-fields" id="name-fields">
+                    <input type="text" id="first-name" placeholder="First Name">
+                    <input type="text" id="last-name" placeholder="Last Name">
+                </div>
+                <input type="email" id="email" placeholder="Email" required
+                pattern="^[a-zA-Z0-9._%+-]{2,}@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$"
+                minlength="6" 
+                maxlength="40" 
+                title="Enter a valid email (e.g., name@example.com)" >
+                <input type="password" 
+                id="password" 
+                placeholder="Enter your password" 
+                required 
+                minlength="8" 
+                maxlength="20"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,20}$"
+                title="Password must be 8-20 characters and include uppercase, lowercase, number, and special character">
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    Create account
+                    <span class="spinner" id="loading-spinner"></span>
+                </button>
+            </form>
+
+            <div id="message" class="error-message"></div>
+
+            <div class="separator">
+                <div class="line"></div>
+                <span id="separator-text">Or Register With</span>
+                <div class="line"></div>
+            </div>
+
+            <!-- <div class="social-box">
+                <div class="social-buttons">
+                    <button type="button" id="google-btn" class="google-btn"><i class="fab fa-google"></i> Google</button>
+                    <button type="button" id="apple-btn" class="apple-btn"><i class="fab fa-apple"></i> Apple</button>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <!-- Firebase Auth SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script type="module" src="{{ url_for('static', filename='js/firebase-config.js') }}"></script>
+    
+    <!-- Login Page JavaScript -->
+    <script type="module" src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

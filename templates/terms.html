@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Terms of Service - MarketMind</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/legal.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div><strong>MarketMind</strong></div>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+            <a href="{{ url_for('movers') }}">Market Movers</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('predict') }}">Predictor</a>
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider">
+                    <span class="toggle-circle">
+                        <span class="toggle-icon">&#9790;</span>
+                    </span>
+                </span>
+            </label>
+        </div>
+    </nav>
+    <main class="legal-container">
+        <h1>Terms of Service</h1>
+        <p>
+            By using MarketMind, you agree to these terms. Our services are for informational and educational purposes only and do not constitute financial advice. You are responsible for your investment decisions.
+        </p>
+        <h2>Use of Service</h2>
+        <ul>
+            <li>Do not misuse or attempt to disrupt our services.</li>
+            <li>Do not use our content for unlawful purposes.</li>
+        </ul>
+        <h2>Limitation of Liability</h2>
+        <p>
+            MarketMind is not liable for any losses or damages arising from the use of our platform.
+        </p>
+        <h2>Changes to Terms</h2>
+        <p>
+            We may update these terms from time to time. Continued use of the service constitutes acceptance of the new terms.
+        </p>
+    </main>
+    <footer>
+        <div class="footer-bottom">
+            <p>© 2025 MarketMind. All rights reserved.</p>
+        </div>
+    </footer>
+    <script type="module" src="{{ url_for('static', filename='js/legal.js') }}"></script>
+</body>
+</html>

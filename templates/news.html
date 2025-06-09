@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/news.css') }}">
+    <!-- Intro.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <!-- Intro.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script type="module"> import { requireLogin } from "{{ url_for('static', filename='js/auth.js') }}"; requireLogin(); </script>
+    <title>MarketMind - Fundamentals</title>
+</head>
+<body>
+    <div class="transition-overlay"></div>
+
+    <nav class="navbar">
+        <div><strong>MarketMind</strong></div>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <div class="dropdown">
+                <h4>Services</h4>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('news') }}">News</a>
+                    <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+                    <a href="{{ url_for('movers') }}">Market Movers</a>
+                    <a href="{{url_for('predict')}}">Predictor</a>
+                </div>
+            </div>
+            <a href="{{ url_for('login') }}" id="logout">Logout</a>
+            <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider">
+                <span class="toggle-circle">
+                <span class="toggle-icon">&#9790;</span> <!-- Sun by default -->
+                </span>
+            </span>
+            </label>
+        </div>
+    </nav>
+    <!-- News Section -->
+    <section class="news-section" data-intro="This section displays the latest news on Indian markets." data-step="1">
+        <h2>Latest News on Indian Markets</h2>
+        <div style="text-align: center; margin-bottom: 20px;" data-intro="Click this button to refresh the news feed." 
+         data-step="2">
+            <button id="refresh-news-btn" style="padding: 8px 18px; background: #4a8fdf; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+                &#x21bb; Refresh News
+            </button>
+        </div>
+        <div class="news-container" id="news-container" data-intro="Here you can view the latest news articles. Scroll to explore more." 
+         data-step="3">
+            <!-- News articles will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <script type="module" src="{{ url_for('static', filename='js/news.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+        <div style="margin-top:100px"></div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="{{ url_for('fundamentals') }}">Fundamentals</a></li>
+                        <li><a href="{{ url_for('movers') }}">Market Movers</a></li>
+                        <li><a href="{{ url_for('news') }}">News</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{url_for('predict')}}">Predictor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+                        <li><a href="{{ url_for('terms') }}">Terms of Service</a></li>
+                        <li><a href="{{ url_for('disclaimer') }}">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@stockai.com">support@stockai.com</a></li>
+                        <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <form id="newsletter-form">
+                        <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 MarketMind. All rights reserved.</p>
+            </div>
+        </footer>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+Flask
+requests
+pymongo
+firebase-admin
+python-dotenv
+yfinance
+numpy
+pandas
+scikit-learn
+tensorflow
+gunicorn
+transformers
+torch

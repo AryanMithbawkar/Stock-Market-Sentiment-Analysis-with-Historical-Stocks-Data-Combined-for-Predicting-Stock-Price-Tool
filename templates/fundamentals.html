@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script type="module" src="{{ url_for('static', filename='js/firebase-config.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fundamentals.css') }}">
+    <!-- Intro.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <!-- Intro.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script type="module"> import { requireLogin } from "{{ url_for('static', filename='js/auth.js') }}"; requireLogin(); </script>
+    <!-- Add this to your head section -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>MarketMind - Fundamentals</title>
+    
+</head>
+<body>
+    <div class="transition-overlay"></div>
+
+    <nav class="navbar">
+        <div><strong>MarketMind</strong></div>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <div class="dropdown">
+                <h4>Services</h4>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+                    <a href="{{ url_for('movers') }}">Market Movers</a>
+                    <a href="{{ url_for('news') }}">News</a>
+                    <a href="{{url_for('predict')}}">Predictor</a>
+                </div>
+            </div>
+            <a href="{{ url_for('login') }}" id="logout">Login</a>
+            <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider">
+                <span class="toggle-circle">
+                <span class="toggle-icon">&#9790;</span> <!-- Sun by default -->
+                </span>
+            </span>
+            </label>
+        </div>
+    </nav>
+
+    <div class="stock-data-container" data-intro="Here you can view and filter historical stock data for Indian companies." data-step="1">
+        <h2>Indian Stock Market Data</h2>
+        <div class="date-range-filter">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date" name="start-date">
+    
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date" name="end-date">
+    
+            <select id="fundamentals-symbol" style="width: 250px;">
+                <option value="">Select a company...</option>
+            </select>
+
+            <button id="fetch">Fetch Data</button>
+        </div>
+    
+        <div id="message-container" style="display: none; padding: 10px; margin: 10px 0; border-radius: 5px;"></div>
+    
+        <!-- Add tabs for different views -->
+        <div class="tab-container" data-intro="Switch between Table, Chart, or Both views for your selected stock data." data-step="2">
+            <button class="tab-button active" onclick="showView('table')">Table View</button>
+            <button class="tab-button" onclick="showView('chart')">Chart View</button>
+            <button class="tab-button" onclick="showView('both')">Both</button>
+        </div>
+        
+        <div id="stock-data-table"></div>
+        
+        <!-- Add chart container -->
+        <div id="chart-view" style="display: none;">
+            <h3 class="chart-title">Price Movement</h3>
+            <div class="chart-container">
+                <div id="stockChart"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<!-- Add this section after your stock data container -->
+<div class="fundamentals-container">
+    <h2>Stock Fundamentals Analysis</h2>
+    
+    <div class="fundamentals-search" data-intro="Analyze key fundamentals, ratios, and risk metrics for any company here." data-step="3">
+        <select id="fundamentals-search-bar" class="styled-dropdown">
+            <option value="">Select a company...</option>
+            <!-- Options will be populated by JS -->
+        </select>
+       <button onclick="fetchFundamentals(document.getElementById('fundamentals-search-bar').value)">Analyze</button>
+    </div>
+    
+    <div class="fundamentals-tabs">
+        <button class="tab-button active" onclick="openTab('ratios')">Key Ratios</button>
+        <button class="tab-button" onclick="openTab('chart')">Historical Trends</button>
+        <button class="tab-button" onclick="openTab('compare')">Risk Metrics</button>
+    </div>
+    
+    <div id="ratios" class="tab-content" style="display: block;">
+        <div class="fundamentals-grid">
+            <div class="fundamental-card">
+                <h3>Valuation Ratios</h3>
+                <div class="ratio-item">
+                    <span class="ratio-name">P/E Ratio</span>
+                    <span class="ratio-value" id="pe-ratio">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">P/B Ratio</span>
+                    <span class="ratio-value" id="pb-ratio">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">P/S Ratio</span>
+                    <span class="ratio-value" id="ps-ratio">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">Dividend Yield</span>
+                    <span class="ratio-value" id="div-yield">-</span>
+                </div>
+            </div>
+            
+            <div class="fundamental-card">
+                <h3>Profitability Ratios</h3>
+                <div class="ratio-item">
+                    <span class="ratio-name">ROE</span>
+                    <span class="ratio-value" id="roe">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">ROA</span>
+                    <span class="ratio-value" id="roa">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">Gross Margin</span>
+                    <span class="ratio-value" id="gross-margin">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">Operating Margin</span>
+                    <span class="ratio-value" id="op-margin">-</span>
+                </div>
+            </div>
+            
+            <div class="fundamental-card">
+                <h3>Liquidity Ratios</h3>
+                <div class="ratio-item">
+                    <span class="ratio-name">Current Ratio</span>
+                    <span class="ratio-value" id="current-ratio">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">Quick Ratio</span>
+                    <span class="ratio-value" id="quick-ratio">-</span>
+                </div>
+            </div>
+            
+            <div class="fundamental-card">
+                <h3>Leverage Ratios</h3>
+                <div class="ratio-item">
+                    <span class="ratio-name">Debt/Equity</span>
+                    <span class="ratio-value" id="debt-equity">-</span>
+                </div>
+                <div class="ratio-item">
+                    <span class="ratio-name">EBITDA Margin</span>
+                    <span class="ratio-value" id="ebitda-margin">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+        <!-- Inside the fundamentals-container, in the chart tab -->
+    <div id="chart" class="tab-content" style="display: none;">
+        <div class="chart-container">
+        <div id="fundamentals-chart"></div>
+        </div>
+    </div>
+    
+    <div id="compare" class="tab-content">
+        <div class="fundamental-card">
+        <h3>Risk Metrics</h3>
+            <div class="ratio-item">
+                <span class="ratio-name">Volatility (Annualized)</span>
+                <span class="ratio-value" id="volatility">-</span>
+            </div>
+            <div class="ratio-item">
+                <span class="ratio-name">Beta</span>
+                <span class="ratio-value" id="beta">-</span>
+            </div>
+            <div class="ratio-item">
+                <span class="ratio-name">VaR (95%)</span>
+                <span class="ratio-value" id="var95">-</span>
+            </div>
+            <div class="chart-container">
+                <div id="risk-metrics-chart"></div>
+            </div>
+            <div class="chart-container">
+                <div id="rolling-vol-chart"></div>
+            </div>
+            <div class="chart-container" style="height:450px;">
+                <div id="beta-gauge-chart"></div>
+            </div>
+</div>
+    </div>
+</div>
+    <script type="module" src="{{ url_for('static', filename='js/fundamentals.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+         <div class="shiny-curve"></div>   
+        <div style="margin-top:500px"></div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="{{ url_for('fundamentals') }}">Fundamentals</a></li>
+                        <li><a href="{{ url_for('movers') }}">Market Movers</a></li>
+                        <li><a href="{{ url_for('news') }}">News</a></li>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{url_for('predict')}}">Predictor</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+                        <li><a href="{{ url_for('terms') }}">Terms of Service</a></li>
+                        <li><a href="{{ url_for('disclaimer') }}">Disclaimer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@stockai.com">support@stockai.com</a></li>
+                        <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                <form id="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 MarketMind. All rights reserved.</p>
+            </div>
+        </footer>
+</body>
+</html>

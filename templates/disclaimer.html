@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Disclaimer - MarketMind</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/legal.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div><strong>MarketMind</strong></div>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('fundamentals') }}">Fundamentals</a>
+            <a href="{{ url_for('movers') }}">Market Movers</a>
+            <a href="{{ url_for('news') }}">News</a>
+            <a href="{{ url_for('predict') }}">Predictor</a>
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider">
+                    <span class="toggle-circle">
+                        <span class="toggle-icon">&#9790;</span>
+                    </span>
+                </span>
+            </label>
+        </div>
+    </nav>
+    <main class="legal-container">
+        <h1>Disclaimer</h1>
+        <p>
+            All information provided by MarketMind is for informational and educational purposes only. We do not guarantee the accuracy, completeness, or timeliness of the data. MarketMind does not provide investment advice, and users should consult a qualified financial advisor before making investment decisions.
+        </p>
+        <p>
+            MarketMind is not responsible for any losses or damages resulting from the use of this site.
+        </p>
+    </main>
+    <footer>
+        <div class="footer-bottom">
+            <p>© 2025 MarketMind. All rights reserved.</p>
+        </div>
+    </footer>
+    <script type="module" src="{{ url_for('static', filename='js/legal.js') }}"></script>
+</body>
+</html>
