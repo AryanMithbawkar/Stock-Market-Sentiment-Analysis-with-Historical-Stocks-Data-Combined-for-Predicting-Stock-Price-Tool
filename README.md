@@ -12,9 +12,9 @@ MarketMind is a comprehensive web application that combines stock market sentime
 
 ## 🎥 Demo Video
 
-[![MarketMind Demo](static/video/demostocks.mp4)](static/video/demostocks.mp4)
+[![MarketMind Demo](static/video/thumb.png)](https://youtu.be/kXl9987fJuk)
 
-_Click the image above to watch the full demo or [view it directly here](static/video/demostocks.mp4)._
+_Click the image above to watch the full demo or [view it directly here](https://youtu.be/kXl9987fJuk)._
 
 ### Quick Demo Features:
 
