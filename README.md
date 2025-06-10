@@ -1,7 +1,7 @@
 # Stock-Market-Sentiment-Analysis-with-Historical-Stocks-Data-Combined-for-Predicting-Stock-Price-Tool
 # MarketMind: Stock Market Sentiment Analysis & Price Prediction Platform
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
 [![Firebase](https://img.shields.io/badge/Firebase-9.0+-orange.svg)](https://firebase.google.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
